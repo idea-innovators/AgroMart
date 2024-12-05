@@ -23,6 +23,67 @@ $img_result = $stmt_img->get_result();
 $categories_sql = "SELECT * FROM categories";
 $categories_result = $conn->query($categories_sql);
 
+// Handle form submission
+if (isset($_POST['submit'])) {
+    // Update the ad details
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $price = $_POST['price'];
+    $phone_number = $_POST['phone_number'];
+    $category_id = $_POST['category'];
+    $district = $_POST['district'];  
+
+    $update_sql = "UPDATE ads SET title = ?, description = ?, price = ?, phone_number = ?, category_id = ?, district = ? WHERE ad_id = ?";
+    $stmt = $conn->prepare($update_sql);
+    $stmt->bind_param("ssdsisi", $title, $description, $price, $phone_number, $category_id, $district, $ad_id);
+    $stmt->execute();
+
+    // Handle new image uploads
+    if (!empty($_FILES['new_images']['name'][0])) {
+        for ($i = 0; $i < count($_FILES['new_images']['name']); $i++) {
+            if ($_FILES['new_images']['error'][$i] == 0) {
+                $image_name = basename($_FILES['new_images']['name'][$i]);
+                $target_path = 'uploads/' . $image_name;
+
+                if (move_uploaded_file($_FILES['new_images']['tmp_name'][$i], $target_path)) {
+                    $insert_img_sql = "INSERT INTO ad_images (ad_id, image_path) VALUES (?, ?)";
+                    $stmt_img = $conn->prepare($insert_img_sql);
+                    $stmt_img->bind_param("is", $ad_id, $target_path);
+                    $stmt_img->execute();
+                }
+            }
+        }
+    }
+
+    // Handle image deletions
+    if (isset($_POST['delete_images'])) {
+        foreach ($_POST['delete_images'] as $image_id) {
+            // Delete the image from the database and server
+            $del_img_sql = "SELECT image_path FROM ad_images WHERE image_id = ?";
+            $stmt = $conn->prepare($del_img_sql);
+            $stmt->bind_param("i", $image_id);
+            $stmt->execute();
+            $img_path = $stmt->get_result()->fetch_assoc()['image_path'];
+
+            // Delete image file from server
+            if (file_exists($img_path)) {
+                unlink($img_path);
+            }
+
+            // Delete image from database
+            $delete_sql = "DELETE FROM ad_images WHERE image_id = ?";
+            $stmt = $conn->prepare($delete_sql);
+            $stmt->bind_param("i", $image_id);
+            $stmt->execute();
+        }
+    }
+
+    // Reload the page to show the updated data
+    header("Location: edit_ad.php?ad_id=" . $ad_id);
+    exit();
+}
+
+
 ?>
 
 <!DOCTYPE html>

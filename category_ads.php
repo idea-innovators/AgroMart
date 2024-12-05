@@ -137,3 +137,9 @@ if (isset($_GET['category_id_qp'])) {
 </body>
 
 </html>
+
+<?php
+} else {
+    echo "No category selected.";
+}
+?>

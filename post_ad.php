@@ -1,3 +1,61 @@
+<!-- post_ad.php -->
+<?php
+
+session_start();
+include 'config.php';
+
+
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
+
+
+
+if (isset($_POST['submit'])) {
+    // Collect other ad details
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $price = $_POST['price'];
+    $phone_number = $_POST['phone_number'];
+    $district = $_POST['district']; 
+    // Assuming the user ID is stored in session after login
+    $user_id = $_SESSION['user_id']; 
+    $category_id = $_POST['category'];
+
+    // Insert ad details into the 'ads' table
+    $ad_sql = "INSERT INTO ads (title, description, price, phone_number, user_id, category_id, district) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($ad_sql);
+    $stmt->bind_param("ssdsiss", $title, $description, $price, $phone_number, $user_id, $category_id, $district);
+    $stmt->execute();
+    $ad_id = $conn->insert_id; // Get the ID of the newly inserted ad
+
+
+    //Upload multiple images
+    for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+        if ($_FILES['images']['error'][$i] == 0) {
+            $image_name = basename($_FILES['images']['name'][$i]);
+            $target_path = 'uploads/' . $image_name;
+            
+            // Move the uploaded file to the server directory
+            if (move_uploaded_file($_FILES['images']['tmp_name'][$i], $target_path)) {
+                // Insert each image path into the 'ad_images' table
+                $img_sql = "INSERT INTO ad_images (ad_id, image_path) VALUES (?, ?)";
+                $stmt_img = $conn->prepare($img_sql);
+                $stmt_img->bind_param("is", $ad_id, $target_path);
+                $stmt_img->execute();
+            }
+        }
+    }
+
+    echo "Ad and images uploaded successfully!";
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

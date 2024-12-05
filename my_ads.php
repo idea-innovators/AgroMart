@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Ads</title>
-    
+    <style>
+    /* CSS for card layout */
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin: 20px;
+    }
+
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        background-color: #f9f9f9;
+    }
+
+    .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .card h4 {
+        margin: 10px 0;
+    }
+
+    .card p {
+        color: #555;
+    }
+
+    .card .btn {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: #28a745;
+        color: white;
+        cursor: pointer;
+    }
+
+    .card .btn:hover {
+        background-color: #218838;
+    }
+
+    .card .btn-danger {
+        background-color: red;
+        cursor: pointer;
+    }
+
+    .card .btn-danger:hover {
+        background-color: darkred;
+    }
+
+    .no-ads {
+        text-align: center;
+        font-size: 1.5rem;
+        margin-top: 50px;
+    }
+    </style>
 
     <script>
     // Function to show a confirmation dialog before deleting an ad

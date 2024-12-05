@@ -5,7 +5,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($ad['title']); ?></title>
-   
+    <style>
+    /* Styling for ad details */
+    .ad-details {
+        text-align: center;
+        margin: 20px;
+    }
+
+    .ad-images {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .ad-images img {
+        width: 300px;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    /* Modal overlay for full-size image */
+    #imageModal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    #imageModal img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+        border-radius: 8px;
+    }
+
+    #closeModal {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        color: white;
+        font-size: 30px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    /* Card layout for more items */
+    .more-items-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .more-item-card {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        width: 18%;
+        /* 5 items per row */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+        text-align: center;
+        padding: 10px;
+        min-width: 200px;
+    }
+
+    .more-item-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .more-item-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .more-item-card h4 {
+        font-size: 16px;
+        color: #333;
+        margin: 10px 0 5px 0;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+
+    .more-item-card p {
+        font-size: 14px;
+        color: #007b00;
+        font-weight: 500;
+    }
+
+    /* Prevent horizontal scroll on mobile */
+    body,
+    html {
+        overflow-x: hidden;
+    }
+    </style>
 </head>
 
 <body>

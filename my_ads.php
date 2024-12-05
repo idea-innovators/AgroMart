@@ -1,4 +1,26 @@
+<?php
+session_start();
+include 'config.php'; 
 
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Fetch all ads placed by the logged-in user
+$sql = "SELECT ads.*, GROUP_CONCAT(ad_images.image_path) AS images 
+        FROM ads 
+        LEFT JOIN ad_images ON ads.ad_id = ad_images.ad_id 
+        WHERE ads.user_id = ? 
+        GROUP BY ads.ad_id";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+?>
 
 <!DOCTYPE html>
 <html lang="en">

@@ -1,5 +1,28 @@
+<?php
+session_start();
+include '../config.php';
 
+if (!isset($_SESSION['admin_logged_in'])) {
+    header("Location: admin_login.php");
+    exit();
+}
 
+if (isset($_GET['delete_user'])) {
+    $user_id = $_GET['delete_user'];
+
+    // Delete the user from the database
+    $stmt = $conn->prepare("DELETE FROM users WHERE user_id = ?");
+    $stmt->bind_param('i', $user_id);
+    if ($stmt->execute()) {
+        echo "User deleted successfully!";
+    } else {
+        echo "Failed to delete user.";
+    }
+}
+
+// Fetch all users from the database
+$result = $conn->query("SELECT * FROM users");
+?>
 
 !DOCTYPE html>
 <html lang="en">

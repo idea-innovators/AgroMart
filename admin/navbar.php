@@ -4,6 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+/* Navbar styling */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+}
+
+.logo a {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.nav-right a, .nav-right span {
+    color: white;
+    margin-left: 20px;
+    font-size: 16px;
+}
+
+.btn-login, .btn-register {
+    text-decoration: none;
+    background-color: #4CAF50; /* Green buttons */
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.btn-login:hover, .btn-register:hover {
+    background-color: #45a049;
+}
+
+.btn-logout {
+    text-decoration: none;
+    background-color: #f44336; /* Red for logout */
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.btn-logout:hover {
+    background-color: #d32f2f;
+}
+</style>
+
 </head>
 <body>
 <nav>

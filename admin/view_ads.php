@@ -1,4 +1,28 @@
+<?php
+session_start();
+include '../config.php';
 
+if (!isset($_SESSION['admin_logged_in'])) {
+    header("Location: admin_login.php");
+    exit();
+}
+
+if (isset($_GET['delete_ad'])) {
+    $ad_id = $_GET['delete_ad'];
+
+    // Delete ad from the database
+    $stmt = $conn->prepare("DELETE FROM ads WHERE ad_id = ?");
+    $stmt->bind_param('i', $ad_id);
+    if ($stmt->execute()) {
+        echo "Ad deleted successfully!";
+    } else {
+        echo "Failed to delete ad.";
+    }
+}
+
+// Fetch all ads from the database
+$result = $conn->query("SELECT ads.*, users.username FROM ads JOIN users ON ads.user_id = users.user_id");
+?>
 
 
 

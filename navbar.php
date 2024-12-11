@@ -202,43 +202,27 @@
     }
     </script>
 
-    <div class="navbar">
-        <a href="home.php" class="logo">Plant Nursery</a>
+<div class="navbar">
+    <a href="home.php" class="logo">Plant Nursery</a>
 
-        <!-- Search Bar -->
-        <div class="search-container">
-            <input type="text" placeholder="Search products..." onkeyup="searchProducts(this.value)">
-            <div class="search-results" id="search-results"></div>
-        </div>
-
-        <div class="dropdown">
-            <button class="dropbtn">Categories
-                <!-- <i class="fa fa-caret-down"></i> -->
-            </button>
-            <div class="dropdown-content">
-                <?php
-            // Fetch categories from the database
-            $categories = $conn->query("SELECT * FROM categories");
-            while ($category = $categories->fetch_assoc()) {
-                echo "<a href='category_ads.php?category_id={$category['category_id']}'>{$category['category_name']}</a>";
-            }
-            ?>
-            </div>
-        </div>
-
-        <div class="navbar-right">
-            <a href="my_ads.php">My Ads</a>
-            <a href="post_ad.php">Post Ad</a>
-            <?php if (isset($_SESSION['username'])): ?>
-            <a href="#">Welcome, <?= $_SESSION['username']; ?></a>
-            <a href="#" onclick="confirmLogout(); return false;">Log Out</a>
-            <?php else: ?>
-            <a href="login.php">Login</a>
-            <a href="register.php">Register</a>
-            <?php endif; ?>
-        </div>
+    <!-- Search Bar -->
+    <div class="search-container">
+        <input type="text" placeholder="Search products..." onkeyup="searchProducts(this.value)">
+        <div class="search-results" id="search-results"></div>
     </div>
 
-</body>
+    <div class="navbar-right">
+    <a href="my_ads.php">My Ads</a>
+    <a href="post_ad.php">Post Ad</a>
+        <?php if (isset($_SESSION['username'])): ?>
+            <a href="#">Welcome, <?= $_SESSION['username']; ?></a>
+            <a href="#" onclick="confirmLogout(); return false;">Log Out</a>
+        <?php else: ?>
+            <a href="login.php">Login</a>
+            <a href="register.php">Register</a>
+        <?php endif; ?>
+    </div>
+</div>
 
+</body>
 </html>

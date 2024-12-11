@@ -19,6 +19,61 @@ $result = $conn->query($ads_sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Ads</title>
+    <style>
+        /* Card layout for ads */
+        .ads-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .ad-card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            width: 23%; /* 4 items per row */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+            cursor: pointer; /* Make card clickable */
+        }
+
+        .ad-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .ad-card img {
+            width: 100%;  /* Make the image take the full width of the card */
+            height: 200px; /* Set a fixed height for square aspect ratio */
+            object-fit: cover; /* Ensure the image covers the area without stretching */
+            border-radius: 8px; /* Optional: keep the rounded corners */
+        }
+
+
+        .ad-card h4 {
+            font-size: 16px;
+            color: #333;
+            margin: 10px 0 5px 0;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .ad-card p {
+            font-size: 14px;
+            color: #007b00;
+            font-weight: 500;
+            margin: 5px 0;
+        }
+
+        /* Prevent horizontal scroll on mobile */
+        body, html {
+            overflow-x: hidden;
+        }
+    </style>
 
 </head>
 <body>

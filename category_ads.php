@@ -119,12 +119,11 @@ if (isset($_GET['category_id_qp'])) {
                         ?>
             <div class="ad-card">
                 <a href="view_ad.php?ad_id=<?= $ad_id; ?>">
-                    <!-- Display the first image if available, else show a placeholder -->
                     <?php if ($image): ?>
                     <img src="<?= htmlspecialchars($image['image_path']); ?>"
                         alt="<?= htmlspecialchars($ad['title']); ?>">
                     <?php else: ?>
-                    <img src="placeholder.png" alt="No Image Available">
+                    <img src="images/placeholder/No Image AD.png" alt="No Image Available">
                     <?php endif; ?>
                     <h4><?= htmlspecialchars($ad['title']); ?></h4>
                     <p>Price: $<?= htmlspecialchars($ad['price']); ?></p>

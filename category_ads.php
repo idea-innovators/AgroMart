@@ -110,7 +110,12 @@ if (isset($_GET['category_id_qp'])) {
                         $stmt_img->bind_param("i", $ad_id);
                         $stmt_img->execute();
                         $img_result = $stmt_img->get_result();
-                        $image = $img_result->fetch_assoc(); // Fetch the first image
+                        $image = $img_result->fetch_assoc(); 
+                        // Limit the description to 100 characters
+                        $description = substr(htmlspecialchars($ad['description']), 0, 100);
+                        if (strlen($ad['description']) > 100) {
+                            $description .= '...'; 
+                        }
                         ?>
             <div class="ad-card">
                 <a href="view_ad.php?ad_id=<?= $ad_id; ?>">

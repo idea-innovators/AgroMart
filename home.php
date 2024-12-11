@@ -94,3 +94,62 @@ $ads_result = $conn->query($ads_query);
 <?php
     $conn->close(); 
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<h2>Find What you want here</h2>
+<div class="ads-container">
+    <?php if ($ads_result->num_rows > 0): ?>
+        <?php while ($ad = $ads_result->fetch_assoc()): ?>
+            <div class="ad-card" onclick="window.location.href='view_ad.php?ad_id=<?= $ad['ad_id']; ?>'">
+                <img src="<?= htmlspecialchars($ad['image']); ?>" alt="Ad Image">
+                <h4><?= htmlspecialchars($ad['title']); ?></h4>
+                <p class="ad-description"><?= htmlspecialchars(substr($ad['description'], 0, 200)) . '...'; ?></p>
+                <p>Rs <?= htmlspecialchars($ad['price']); ?></p>
+                <p><strong>District:</strong> <?= htmlspecialchars($ad['district']); ?></p>
+                <p><strong>Posted on:</strong> <?= htmlspecialchars(date('Y-m-d', strtotime($ad['created_at']))); ?></p>
+            </div>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <p>No ads available at the moment.</p>
+    <?php endif; ?>
+</div>
+<!-- view all ads button -->
+<div style="text-align: center; margin: 20px 0;">
+    <a href="all_ads.php" style="text-decoration: none;">
+        <button style="padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; background-color: #007bff; color: white; cursor: pointer;">
+            View All Ads
+        </button>
+    </a>
+</div>

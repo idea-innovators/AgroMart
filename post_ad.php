@@ -1,4 +1,3 @@
-<!-- post_ad.php -->
 <?php
 
 session_start();
@@ -6,12 +5,11 @@ include 'config.php';
 
 
 
-// Check if the user is logged in
+// Checks if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
-
 
 
 if (isset($_POST['submit'])) {
@@ -52,7 +50,6 @@ if (isset($_POST['submit'])) {
 
     echo "Ad and images uploaded successfully!";
 }
-
 
 ?>
 

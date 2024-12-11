@@ -7,7 +7,15 @@ include 'navbar.php';
 $query = "SELECT * FROM categories";
 $result = $conn->query($query);
 
-
+// Fetch random ads from the database (limit to 8 for 2 rows of 4)
+$ads_query = "
+    SELECT ads.*, 
+        categories.category_name, 
+        (SELECT image_path FROM ad_images WHERE ad_id = ads.ad_id LIMIT 1) AS image 
+    FROM ads 
+    JOIN categories ON ads.category_id = categories.category_id 
+    ORDER BY RAND() LIMIT 8"; // Fetch 8 random ads
+$ads_result = $conn->query($ads_query);
 ?>
 
 <!DOCTYPE html>

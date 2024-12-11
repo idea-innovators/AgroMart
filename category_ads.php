@@ -8,13 +8,16 @@ if (isset($_GET['category_id_qp'])) {
     $category_id = $_GET['category_id_qp'];
 
     // Fetch all ads for the selected category
-    $ad_sql = "SELECT * FROM ads WHERE category_id = ?";
+    $ad_sql = "SELECT ads.*, categories.category_name 
+           FROM ads 
+           JOIN categories ON ads.category_id = categories.category_id 
+           WHERE ads.category_id = ?";
     $stmt = $conn->prepare($ad_sql);
     $stmt->bind_param("i", $category_id);
     $stmt->execute();
     $result = $stmt->get_result();
     
-?>
+    ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +27,6 @@ if (isset($_GET['category_id_qp'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Category Ads</title>
     <style>
-    /* General container for the ads */
     .ad-container {
         display: flex;
         flex-wrap: wrap;
@@ -48,13 +50,11 @@ if (isset($_GET['category_id_qp'])) {
         padding: 10px;
     }
 
-    /* On hover effect for the ad card */
     .ad-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     }
 
-    /* Image styling inside the ad card  */
     .ad-card img {
         width: 100%;
         height: 150px;
@@ -62,7 +62,7 @@ if (isset($_GET['category_id_qp'])) {
         border-radius: 8px;
     }
 
-    /* Title styling */
+    /* Title  */
     .ad-card h4 {
         font-size: 18px;
         color: #333;
@@ -71,14 +71,13 @@ if (isset($_GET['category_id_qp'])) {
         text-transform: capitalize;
     }
 
-    /* Price styling */
+    /* Price  */
     .ad-card p {
         font-size: 16px;
         color: #007b00;
         font-weight: 500;
     }
 
-    /* Responsive design for smaller screens */
     @media (max-width: 768px) {
         .ad-card {
             width: 45%;
@@ -91,7 +90,6 @@ if (isset($_GET['category_id_qp'])) {
         }
     }
     </style>
-
 </head>
 
 <body>
@@ -119,6 +117,7 @@ if (isset($_GET['category_id_qp'])) {
                         ?>
             <div class="ad-card">
                 <a href="view_ad.php?ad_id=<?= $ad_id; ?>">
+
                     <?php if ($image): ?>
                     <img src="<?= htmlspecialchars($image['image_path']); ?>"
                         alt="<?= htmlspecialchars($ad['title']); ?>">
@@ -126,7 +125,10 @@ if (isset($_GET['category_id_qp'])) {
                     <img src="images/placeholder/No Image AD.png" alt="No Image Available">
                     <?php endif; ?>
                     <h4><?= htmlspecialchars($ad['title']); ?></h4>
-                    <p>Price: $<?= htmlspecialchars($ad['price']); ?></p>
+                    <p><?= $description; ?></p>
+                    <p>Price: Rs <?= htmlspecialchars($ad['price']); ?></p>
+                    <p>District: <?= htmlspecialchars($ad['district']); ?></p>
+                    <p>Posted on: <?= date('F j, Y', strtotime($ad['created_at'])); ?></p>
                 </a>
             </div>
             <?php

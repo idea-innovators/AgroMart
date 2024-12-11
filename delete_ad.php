@@ -17,7 +17,7 @@ if (isset($_GET['ad_id'])) {
     $stmt->bind_param("ii", $ad_id, $_SESSION['user_id']);
     $stmt->execute();
 
-    // Optionally, delete associated images from the `ad_images` table
+    // delete associated images from the ad_images table
     $img_sql = "DELETE FROM ad_images WHERE ad_id = ?";
     $stmt_img = $conn->prepare($img_sql);
     $stmt_img->bind_param("i", $ad_id);

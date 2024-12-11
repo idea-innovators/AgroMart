@@ -45,7 +45,7 @@ if (isset($_POST['register'])) {
             // Set session variables to log the user in
             $_SESSION['username'] = $username;
             $_SESSION['user_id'] = $user_id;
-            // Registration successful, redirect to the user's ads page
+            
             header("Location: my_ads.php");
             exit;
         }

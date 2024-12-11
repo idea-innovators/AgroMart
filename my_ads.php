@@ -30,7 +30,6 @@ $result = $stmt->get_result();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Ads</title>
     <style>
-    /* CSS for card layout */
     .card-container {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -109,10 +108,10 @@ $result = $stmt->get_result();
     <div class="card-container">
         <?php
     if ($result->num_rows > 0) {
-        // Loop through each ad
+        
         while ($row = $result->fetch_assoc()) {
             $images = explode(',', $row['images']);
-            $first_image = !empty($images[0]) ? $images[0] : 'default_image.jpg'; // Fallback to a default image
+            $first_image = !empty($images[0]) ? $images[0] : 'default_image.jpg';
             ?>
         <div class="card">
             <img src="<?= $first_image ?>" alt="Ad Image">

@@ -67,7 +67,80 @@ if (isset($_POST['register'])) {
             height: 90vh;
         }
 
+        /* Register Container */
+        .register-container {
+            align-items: center;
+            display: flex;
+            gap: 30px;
+            background-color: #e2e6eb;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 50%;
+        }
 
+        .plant-image {
+            width: 300px;
+            height: 300px;
+            background-image: url('images/register image.png'); 
+            background-size: cover;
+            background-position: center;
+        }
+
+        .register-form {
+            flex: 1;
+            max-width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-left: auto;
+        }
+
+        .register-form h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .register-form form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .register-form input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .register-form button {
+            background-color: #007a33;
+            color: #fff;
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .register-form button:hover {
+            background-color: #005922;
+        }
+
+        .p1 {
+            font-size: 14px;
+            color: black;
+            margin-top: 10px;
+        }
+
+        .link {
+            text-decoration: none;
+            color: #0917EE;
+            font-weight: bold;
+        }
 
     </style>
 </head>

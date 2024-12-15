@@ -1,12 +1,12 @@
 <?php
 session_start();
 include 'config.php';
-include 'navbar.php'; // Including the navbar
+include 'navbar.php'; 
 
 // Set the number of ads per page
 $ads_per_page = 16;
 
-// Get the current page number from the URL, default to 1 if not set
+// Get the current page number from the URL
 $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($current_page - 1) * $ads_per_page;
 
@@ -35,13 +35,24 @@ $result = $conn->query($ads_sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Ads</title>
     <style>
+    .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .title1 {
+        text-align: center;
+        margin: 20px 0;
+    }
+
     /* Card layout for ads */
     .ads-container {
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
         justify-content: center;
-        margin: 20px;
+        margin: 20px 0;
     }
 
     .ad-card {
@@ -49,13 +60,11 @@ $result = $conn->query($ads_sql);
         border: 1px solid #ddd;
         border-radius: 8px;
         overflow: hidden;
-        width: 23%;
-        /* 4 items per row */
+        width: calc(25% - 20px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         transition: transform 0.2s, box-shadow 0.2s;
         text-align: center;
         cursor: pointer;
-        /* Make card clickable */
     }
 
     .ad-card:hover {
@@ -65,15 +74,10 @@ $result = $conn->query($ads_sql);
 
     .ad-card img {
         width: 100%;
-        /* Make the image take the full width of the card */
         height: 200px;
-        /* Set a fixed height for square aspect ratio */
         object-fit: cover;
-        /* Ensure the image covers the area without stretching */
         border-radius: 8px;
-        /* Optional: keep the rounded corners */
     }
-
 
     .ad-card h4 {
         font-size: 16px;
@@ -85,18 +89,78 @@ $result = $conn->query($ads_sql);
 
     .ad-card p {
         font-size: 14px;
-        color: #007b00;
+        color: #555;
         font-weight: 500;
         margin: 5px 0;
     }
 
-    /* Prevent horizontal scroll on mobile */
+    /* Left-align the specific details */
+    .ad-details {
+        margin-left: 20px;
+        text-align: left;
+        margin-top: 10px;
+    }
+
+    .title2 {
+        font-weight: 700;
+        color: black;
+        margin: 0;
+    }
+
+    /* Pagination */
+    .pagination {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .pagination a {
+        margin: 0 5px;
+        padding: 8px 12px;
+        text-decoration: none;
+        color: #333;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+    }
+
+    .pagination a.active {
+        background-color: #333;
+        color: #fff;
+        border-color: #333;
+    }
+
+    .pagination a:hover {
+        background-color: #555;
+        color: #fff;
+    }
+
+    /* Media Queries */
+    @media (max-width: 1200px) {
+        .ad-card {
+            width: calc(33.33% - 20px);
+            /* 3 cards per row */
+        }
+    }
+
+    @media (max-width: 800px) {
+        .ad-card {
+            width: calc(50% - 20px);
+            /* 2 cards per row */
+        }
+    }
+
+    @media (max-width: 500px) {
+        .ad-card {
+            width: 100%;
+            /* 1 card per row */
+        }
+    }
+
     body,
     html {
         overflow-x: hidden;
     }
     </style>
-
 </head>
 
 <body>
@@ -129,7 +193,7 @@ $result = $conn->query($ads_sql);
             <?php endif; ?>
         </div>
 
-        <!-- Pagination Links Below the Ads Container -->
+        <!-- Pagination -->
         <div class="pagination">
             <?php for ($page = 1; $page <= $total_pages; $page++): ?>
             <a href="?page=<?= $page; ?>" class="<?= $page == $current_page ? 'active' : ''; ?>">

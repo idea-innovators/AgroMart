@@ -7,14 +7,14 @@ include 'navbar.php';
 $query = "SELECT * FROM categories";
 $result = $conn->query($query);
 
-// Fetch random ads from the database (limit to 8 for 2 rows of 4)
+// Fetch random ads from the database
 $ads_query = "
     SELECT ads.*, 
         categories.category_name, 
         (SELECT image_path FROM ad_images WHERE ad_id = ads.ad_id LIMIT 1) AS image 
     FROM ads 
     JOIN categories ON ads.category_id = categories.category_id 
-    ORDER BY RAND() LIMIT 8"; // Fetch 8 random ads
+    ORDER BY RAND() LIMIT 8";
 $ads_result = $conn->query($ads_query);
 ?>
 
@@ -26,6 +26,34 @@ $ads_result = $conn->query($ads_query);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Categories</title>
     <style>
+      
+      body {
+            font-family: Arial, sans-serif;
+            margin: 0;    
+        }
+
+        .main-container {
+            width: 75%; 
+            margin: 0 auto; 
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        /* Banner Image */
+        .banner-slides { 
+          
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+        }
+
     .category-container {
         display: flex;
         flex-wrap: wrap;
@@ -113,6 +141,29 @@ $ads_result = $conn->query($ads_query);
 </head>
 
 <body>
+
+<div class="banner-image">
+    <img class="banner-slides" src="images/cover.jpg" >
+    <img class="banner-slides" src="images/lettuce-plant-on-field-vegetable-and-agriculture-sunset-and-light-free-photo.jpg" >
+    <img class="banner-slides" src="images/iStock-531690340_c_valentinrussanov.webp">
+</div>
+
+<script>
+var myIndex = 0;
+carousel();
+
+function carousel() {
+    var i;
+    var x = document.getElementsByClassName("banner-slides");
+    for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";  
+    }
+    myIndex++;
+    if (myIndex > x.length) {myIndex = 1}    
+    x[myIndex-1].style.display = "block";  
+    setTimeout(carousel, 2000); 
+}
+</script>
 
     <h1>Our Categories</h1>
     <div class="category-container">

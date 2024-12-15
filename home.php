@@ -98,45 +98,54 @@ $ads_result = $conn->query($ads_query);
             border-radius: 10px;
         }
 
-    .category-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin-top: 20px;
-    }
+        
+        /* Category Section */
+        .category-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px; 
+            padding: 20px;
+            background-color: #fff;
+        }
 
-    .category-card {
-        width: calc(25% - 20px);
-        margin: 10px;
-        text-align: center;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 10px;
-        background-color: #f9f9f9;
-        box-sizing: border-box;
-    }
+        /* Individual category card */
+        .category-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 200px; 
+        }
 
-    .category-card img {
-        width: 100%;
-        height: auto;
-        max-height: 150px;
-        object-fit: cover;
-        border-radius: 5px;
-    }
+        .category-card a {
+            display: block;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: #F5F5A9;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
 
-    .category-card h3 {
-        font-size: 1.2rem;
-        margin: 10px 0;
-    }
+        .category-card:hover {
+            transform: scale(1.05);
+        }
 
-    .category-card a {
-        text-decoration: none;
-        color: black;
-    }
+        .category-card img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
 
-    .category-card a:hover {
-        color: #007bff;
-    }
+        /* Category name */
+        .category-name {
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #333;
+            font-weight: bold;
+        }
 
     body,
     html {
@@ -223,18 +232,17 @@ function carousel() {
     
 </section>
 
-    <h1>Our Categories</h1>
-    <div class="category-container">
-        <?php while ($category = $result->fetch_assoc()): ?>
+<h1>Categories</h1>
+<div class="category-container">
+    <?php while ($category = $result->fetch_assoc()): ?>
         <div class="category-card">
             <a href="category_ads.php?category_id_qp=<?php echo $category['category_id']; ?>">
-                <img src="uploads/<?php echo $category['category_image']; ?>"
-                    alt="<?php echo $category['category_name']; ?>">
-                <h3><?php echo $category['category_name']; ?></h3>
+                <img src="uploads/<?php echo $category['category_image']; ?>" alt="<?php echo $category['category_name']; ?>">
             </a>
+            <h3 class="category-name"><?php echo $category['category_name']; ?></h3>
         </div>
-        <?php endwhile; ?>
-    </div>
+    <?php endwhile; ?>
+</div>
 
     <h2>Find What you want here</h2>
     <div class="ads-container">

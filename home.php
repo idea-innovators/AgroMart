@@ -54,6 +54,50 @@ $ads_result = $conn->query($ads_query);
             object-fit: cover;
         }
 
+             /* Welcome Section */
+             .welcome-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 40px;
+            background-color: #f9f9f9; /* Light background for contrast */
+        }
+
+        .welcome-text {
+            flex: 1;
+            padding-left: 20px;
+        }
+
+        .welcome-text h2 {
+            color: #ff8c00; /* Adjust to match your theme */
+        }
+
+        .welcome-text p {
+            color: #666;
+        }
+
+        .about-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff8c00;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .welcome-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .welcome-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
     .category-container {
         display: flex;
         flex-wrap: wrap;
@@ -165,6 +209,20 @@ function carousel() {
 }
 </script>
 
+<div class="main-container">
+
+<section class="welcome-section">
+    <div class="welcome-image">
+        <img src="images/inner_home_05-1024x768.jpg" alt="Gardening Image">
+    </div>
+    <div class="welcome-text">
+        <h2>Nature In Your House</h2>
+        <p>Welcome to AgroMart Online Plants Store Sri Lanka. We offer the best plants and agricultural products with expert guidance in gardening.</p>
+        <a href="#" class="about-btn">About Us</a>
+    </div>
+    
+</section>
+
     <h1>Our Categories</h1>
     <div class="category-container">
         <?php while ($category = $result->fetch_assoc()): ?>
@@ -204,6 +262,7 @@ function carousel() {
                 View All Ads
             </button>
         </a>
+    </div>
     </div>
 
 

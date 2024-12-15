@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'config.php'; 
+include 'config.php';
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -9,18 +9,35 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
+$ads_per_page = 16; // Number of ads per page
 
-// Fetch all ads placed by the logged-in user
+// Get the current page number from the URL, default to 1 if not set
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($current_page - 1) * $ads_per_page;
+
+// Fetch total number of ads for the user
+$total_ads_sql = "SELECT COUNT(*) AS total FROM ads WHERE user_id = ?";
+$total_stmt = $conn->prepare($total_ads_sql);
+$total_stmt->bind_param("i", $user_id);
+$total_stmt->execute();
+$total_ads_result = $total_stmt->get_result();
+$total_ads = $total_ads_result->fetch_assoc()['total'];
+$total_pages = ceil($total_ads / $ads_per_page);
+
+// Fetch ads for the current page
 $sql = "SELECT ads.*, GROUP_CONCAT(ad_images.image_path) AS images 
         FROM ads 
         LEFT JOIN ad_images ON ads.ad_id = ad_images.ad_id 
         WHERE ads.user_id = ? 
-        GROUP BY ads.ad_id";
+        GROUP BY ads.ad_id 
+        ORDER BY ads.created_at DESC 
+        LIMIT ? OFFSET ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
+$stmt->bind_param("iii", $user_id, $ads_per_page, $offset);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

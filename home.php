@@ -7,27 +7,26 @@ include 'navbar.php';
 $query = "SELECT * FROM categories";
 $result = $conn->query($query);
 
-// Fetch random ads from the database
+// Fetch random ads from the database 
 $ads_query = "
     SELECT ads.*, 
         categories.category_name, 
         (SELECT image_path FROM ad_images WHERE ad_id = ads.ad_id LIMIT 1) AS image 
     FROM ads 
     JOIN categories ON ads.category_id = categories.category_id 
-    ORDER BY RAND() LIMIT 8";
+    ORDER BY RAND() LIMIT 8"; 
 $ads_result = $conn->query($ads_query);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Categories</title>
+    <title>AgroMart Home</title>
     <style>
-      
-      body {
+        
+        body {
             font-family: Arial, sans-serif;
             margin: 0;    
         }
@@ -54,13 +53,13 @@ $ads_result = $conn->query($ads_query);
             object-fit: cover;
         }
 
-             /* Welcome Section */
-             .welcome-section {
+        /* Welcome Section */
+        .welcome-section {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 40px;
-            background-color: #f9f9f9; /* Light background for contrast */
+            background-color: #f9f9f9; 
         }
 
         .welcome-text {
@@ -69,7 +68,7 @@ $ads_result = $conn->query($ads_query);
         }
 
         .welcome-text h2 {
-            color: #ff8c00; /* Adjust to match your theme */
+            color: #ff8c00; 
         }
 
         .welcome-text p {
@@ -98,7 +97,6 @@ $ads_result = $conn->query($ads_query);
             border-radius: 10px;
         }
 
-        
         /* Category Section */
         .category-container {
             display: flex;
@@ -115,8 +113,7 @@ $ads_result = $conn->query($ads_query);
             flex-direction: column;
             align-items: center;
             text-align: center;
-            width: 200px; 
-        }
+            width: 200px; }
 
         .category-card a {
             display: block;
@@ -139,7 +136,7 @@ $ads_result = $conn->query($ads_query);
             object-fit: cover;
         }
 
-        /* Category name */
+        /* Category name styling */
         .category-name {
             margin-top: 10px;
             font-size: 1rem;
@@ -147,8 +144,8 @@ $ads_result = $conn->query($ads_query);
             font-weight: bold;
         }
 
-             /* Ads Section */
-             .ads-container {
+        /* Ads Section */
+        .ads-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
@@ -157,7 +154,7 @@ $ads_result = $conn->query($ads_query);
         }
 
         .ad-card {
-            width: calc(21% - 20px); /* Adjusted width to fit four cards per row */
+            width: calc(21% - 20px); 
             margin: 10px;
             background-color: white;
             border: 1px solid #ddd;
@@ -214,10 +211,87 @@ $ads_result = $conn->query($ads_query);
             background-color: #0056b3;
         }
 
+        /* Footer */
+        footer {
+            background-color: #006400;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
 
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 1200px) {
+            .main-container {
+                width: 90%; 
+            }
+
+            .ads-container {
+                justify-content: center; 
+            }
+
+            .ad-card {
+                width: calc(45% - 20px); 
+            }
+
+            .category-card {
+                width: 150px; 
+            }
+        }
+
+        @media (max-width: 768px) {
+            .welcome-section {
+                flex-direction: column; 
+                align-items: center; 
+            }
+
+            .welcome-image {
+                order: 1; 
+            }
+
+            .welcome-text {
+                order: 2; /
+                text-align: center; 
+            }
+
+            .ad-card {
+                width: calc(100% - 20px); /* Full width for smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .banner-slides {
+                height: 300px; /* Adjust banner height for small screens */
+            }
+
+            h1, h2 {
+                font-size: 1.5rem; /* Smaller headings */
+            }
+
+            .about-btn, .view-all-btn button {
+                width: 100%; 
+                font-size: 1rem; 
+            }
+
+            .category-card {
+                width: 120px; 
+            }
+
+            .category-name {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
-
 <body>
 
 <div class="banner-image">
@@ -239,7 +313,7 @@ function carousel() {
     myIndex++;
     if (myIndex > x.length) {myIndex = 1}    
     x[myIndex-1].style.display = "block";  
-    setTimeout(carousel, 2000); // Change image every 2 seconds
+    setTimeout(carousel, 2000); 
 }
 </script>
 
@@ -292,11 +366,14 @@ function carousel() {
 </div>
     </div>
 
+<footer>
+    <p>Contact Us | 076 44 55 658</p>
+    <p>&copy; 2024 AgroMart. All rights reserved.</p>
+</footer>
 
-    <?php
+<?php
 $conn->close(); 
 ?>
 
 </body>
-
 </html>

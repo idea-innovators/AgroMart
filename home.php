@@ -147,49 +147,74 @@ $ads_result = $conn->query($ads_query);
             font-weight: bold;
         }
 
-    body,
-    html {
-        overflow-x: hidden;
-    }
+             /* Ads Section */
+             .ads-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
 
-    .ads-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin-top: 20px;
-    }
+        .ad-card {
+            width: calc(21% - 20px); /* Adjusted width to fit four cards per row */
+            margin: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
 
-    .ad-card {
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        overflow: hidden;
-        width: calc(25% - 20px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s, box-shadow 0.2s;
-        text-align: center;
-        cursor: pointer;
-        margin-bottom: 20px;
-    }
+        .ad-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
 
-    .ad-card img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 8px;
-    }
+        .ad-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .ad-card h4 {
+            font-size: 1rem;
+            color: #333;
+            margin: 5px 0;
+        }
+
+        .ad-card p {
+            font-size: 0.9rem;
+            color: #555;
+            margin: 5px 0;
+        }
+
+        /* View All Products Button */
+        .view-all-btn {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .view-all-btn button {
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .view-all-btn button:hover {
+            background-color: #0056b3;
+        }
 
 
-    .ad-card h4 {
-        font-size: 1.1rem;
-        margin: 10px 0 5px 0;
-    }
-
-    .ad-card p {
-        font-size: 0.9rem;
-        color: #555;
-        margin: 5px 0;
-    }
     </style>
 </head>
 
@@ -214,7 +239,7 @@ function carousel() {
     myIndex++;
     if (myIndex > x.length) {myIndex = 1}    
     x[myIndex-1].style.display = "block";  
-    setTimeout(carousel, 2000); 
+    setTimeout(carousel, 2000); // Change image every 2 seconds
 }
 </script>
 
@@ -244,33 +269,27 @@ function carousel() {
     <?php endwhile; ?>
 </div>
 
-    <h2>Find What you want here</h2>
-    <div class="ads-container">
-        <?php if ($ads_result->num_rows > 0): ?>
+<h2>Find What You Want Here</h2>
+<div class="ads-container">
+    <?php if ($ads_result->num_rows > 0): ?>
         <?php while ($ad = $ads_result->fetch_assoc()): ?>
-        <div class="ad-card" onclick="window.location.href='view_ad.php?ad_id=<?= $ad['ad_id']; ?>'">
-            <img src="<?= htmlspecialchars($ad['image']); ?>" alt="Ad Image">
-            <h4><?= htmlspecialchars($ad['title']); ?></h4>
-            <p class="ad-description"><?= htmlspecialchars(substr($ad['description'], 0, 200)) . '...'; ?></p>
-            <p>Rs <?= htmlspecialchars($ad['price']); ?></p>
-            <p><strong>District:</strong> <?= htmlspecialchars($ad['district']); ?></p>
-            <p><strong>Posted on:</strong> <?= htmlspecialchars(date('Y-m-d', strtotime($ad['created_at']))); ?></p>
-        </div>
+            <div class="ad-card" onclick="window.location.href='view_ad.php?ad_id=<?= $ad['ad_id']; ?>'">
+                <img src="<?= htmlspecialchars($ad['image']); ?>" alt="Ad Image">
+                <h4><?= htmlspecialchars($ad['title']); ?></h4>
+                <p><?= htmlspecialchars(substr($ad['description'], 0, 100)) . '...'; ?></p>
+                <p>Rs <?= htmlspecialchars($ad['price']); ?></p>
+                <p><strong>District:</strong> <?= htmlspecialchars($ad['district']); ?></p>
+                <p><strong>Posted on:</strong> <?= htmlspecialchars(date('Y-m-d', strtotime($ad['created_at']))); ?></p>
+            </div>
         <?php endwhile; ?>
-        <?php else: ?>
+    <?php else: ?>
         <p>No ads available at the moment.</p>
-        <?php endif; ?>
-    </div>
+    <?php endif; ?>
+</div>
 
-    <!-- view all ads button -->
-    <div style="text-align: center; margin: 20px 0;">
-        <a href="all_ads.php" style="text-decoration: none;">
-            <button
-                style="padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; background-color: #007bff; color: white; cursor: pointer;">
-                View All Ads
-            </button>
-        </a>
-    </div>
+<div class="view-all-btn">
+    <a href="all_ads.php"><button>View All Ads</button></a>
+</div>
     </div>
 
 

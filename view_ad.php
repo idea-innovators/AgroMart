@@ -1,13 +1,12 @@
 <?php
 session_start();
 include 'config.php';
-include 'navbar.php';
+
 
 // Get the ad ID from the URL
 if (isset($_GET['ad_id'])) {
     $ad_id = $_GET['ad_id'];
 
-    // Fetch ad details from the database
     $ad_sql = "
         SELECT ads.*, categories.category_name, DATE_FORMAT(ads.created_at, '%M %d, %Y %h:%i %p') AS formatted_date 
         FROM ads 
@@ -59,155 +58,214 @@ else {
 
 <!DOCTYPE html>
 <html lang="en">
+<?php include 'navbar.php'; ?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($ad['title']); ?></title>
     <style>
-        .ad-details {
-            text-align: center;
-            margin: 20px;
-        }
+    body,
+    html {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        background-color: #f4f9f4;
+        overflow-x: hidden;
+    }
 
-        .ad-images {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+    /* Centered title  */
+    .ad-title {
+        text-align: center;
+        margin: 20px 0;
+        font-size: 28px;
+        font-weight: bold;
+        color: black;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    /* Ad details */
+    .ad-details {
+        text-align: center;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #e7f5e7;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 100, 0, 0.2);
+    }
+
+    .ad-details p {
+        font-size: 16px;
+        color: #444;
+        margin: 8px 0;
+    }
+
+    /* Image gallery */
+    .ad-images {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+    }
+
+    .ad-images img {
+        width: 280px;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: transform 0.2s;
+        border: 2px solid #a9e6a9;
+    }
+
+    .ad-images img:hover {
+        transform: scale(1.05);
+        border-color: #006400;
+    }
+
+    /* Modal overlay for full-size image */
+    #imageModal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    #imageModal img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+        border-radius: 8px;
+    }
+
+    #closeModal {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: white;
+        font-size: 35px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    /* Similar products */
+    .more-items-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .more-item-card {
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        width: 23%;
+        box-shadow: 0 4px 8px rgba(0, 128, 0, 0.15);
+        transition: transform 0.2s, box-shadow 0.2s;
+        text-align: center;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .more-item-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 100, 0, 0.2);
+    }
+
+    .more-item-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+        border-bottom: 4px solid #a9e6a9;
+    }
+
+    .more-item-card h4 {
+        font-size: 16px;
+        color: #006400;
+        margin: 10px 0 5px 0;
+        font-weight: 600;
+    }
+
+    .more-item-card p {
+        font-size: 14px;
+        color: #2e8b57;
+        font-weight: 500;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .more-item-card {
+            width: 48%;
         }
 
         .ad-images img {
-            width: 300px;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 10px;
-            cursor: pointer; 
-        }
-
-       
-        #imageModal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            height: auto;
         }
+    }
 
-        #imageModal img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 8px;
-        }
-
-        #closeModal {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            color: white;
-            font-size: 30px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* Card layout for similar items */
-        .more-items-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 40px;
-        }
-
+    @media (max-width: 480px) {
         .more-item-card {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            overflow: hidden;
-            width: 23%; /* 4 items per row */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-            text-align: center;
-            padding: 10px;
-            cursor: pointer; 
-        }
-
-        .more-item-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .more-item-card img {
             width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
         }
-
-        .more-item-card h4 {
-            font-size: 16px;
-            color: #333;
-            margin: 10px 0 5px 0;
-            font-weight: 600;
-            text-transform: capitalize;
-        }
-
-        .more-item-card p {
-            font-size: 14px;
-            color: #007b00;
-            font-weight: 500;
-        }
-
-        /* Prevent horizontal scroll on mobile */
-        body, html {
-            overflow-x: hidden;
-        }
+    }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <h2><?= htmlspecialchars($ad['title']); ?></h2>
-    <div class="ad-details">
-        <p><strong>Description:</strong> <?= htmlspecialchars($ad['description']); ?></p>
-        <p><strong>Price:</strong> Rs <?= htmlspecialchars($ad['price']); ?></p>
-        <p><strong>Contact Number:</strong> <?= htmlspecialchars($ad['phone_number']); ?></p>
-        <p><strong>Category:</strong> <?= htmlspecialchars($ad['category_name']); ?></p>
-        <p><strong>Posted On:</strong> <?= htmlspecialchars($ad['formatted_date']); ?></p>
-        <p><strong>District:</strong> <?= htmlspecialchars($ad['district']); ?></p>
-    </div>
+    <div class="container">
+        <div class="ad-title"><?= htmlspecialchars($ad['title']); ?></div>
+        <div class="ad-details">
+            <p><strong>Description:</strong> <?= htmlspecialchars($ad['description']); ?></p>
+            <p><strong>Price:</strong> Rs <?= htmlspecialchars($ad['price']); ?></p>
+            <p><strong>Contact Number:</strong> <?= htmlspecialchars($ad['phone_number']); ?></p>
+            <p><strong>Category:</strong> <?= htmlspecialchars($ad['category_name']); ?></p>
+            <p><strong>Posted On:</strong> <?= htmlspecialchars($ad['formatted_date']); ?></p>
+            <p><strong>District:</strong> <?= htmlspecialchars($ad['district']); ?></p>
+        </div>
 
-    <div class="ad-images">
-        <?php foreach ($images as $image): ?>
+        <div class="ad-images">
+            <?php foreach ($images as $image): ?>
             <img src="<?= htmlspecialchars($image); ?>" alt="Ad Image" onclick="openModal(this.src)">
-        <?php endforeach; ?>
-    </div>
+            <?php endforeach; ?>
+        </div>
 
-    <div id="imageModal" onclick="closeModal()">
-        <span id="closeModal">&times;</span>
-        <img id="modalImage" src="" alt="Full Size Image">
-    </div>
+        <div id="imageModal" onclick="closeModal()">
+            <span id="closeModal">&times;</span>
+            <img id="modalImage" src="" alt="Full Size Image">
+        </div>
 
-    <h3>Similar Products</h3>
-    <div class="more-items-container">
-        <?php while ($similar_ad = $similar_ads_result->fetch_assoc()): ?>
+        <h3>Similar Products</h3>
+        <div class="more-items-container">
+            <?php while ($similar_ad = $similar_ads_result->fetch_assoc()): ?>
             <div class="more-item-card" onclick="window.location.href='view_ad.php?ad_id=<?= $similar_ad['ad_id']; ?>'">
                 <img src="<?= htmlspecialchars($similar_ad['image']); ?>" alt="Product Image">
                 <h4><?= htmlspecialchars($similar_ad['title']); ?></h4>
                 <p>Rs <?= htmlspecialchars($similar_ad['price']); ?></p>
-                <p><strong>District:</strong> <?= htmlspecialchars($similar_ad['district']); ?></p>
             </div>
-        <?php endwhile; ?>
+            <?php endwhile; ?>
+        </div>
     </div>
-</div>
 
-<script>
+    <script>
     function openModal(src) {
         document.getElementById('modalImage').src = src;
         document.getElementById('imageModal').style.display = 'flex';
@@ -216,7 +274,8 @@ else {
     function closeModal() {
         document.getElementById('imageModal').style.display = 'none';
     }
-</script>
+    </script>
 
 </body>
+
 </html>

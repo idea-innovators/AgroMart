@@ -54,7 +54,6 @@ $result = $conn->query($ads_sql);
         justify-content: center;
         margin: 20px 0;
     }
-
     .ad-card {
         background-color: #f9f9f9;
         border: 1px solid #ddd;
